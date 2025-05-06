@@ -1,4 +1,5 @@
 #pragma once
+#include<iostream>
 #include <SFML/Graphics.hpp> 
 
 //class that acts as the game engine
@@ -14,9 +15,13 @@ private:
 	sf::VideoMode videoMode;
 	sf::Event ev;
 
+	//Game objects
+	sf::RectangleShape enemy;//rectangle shape
+
 	//private  functions
 	void initVariables();
 	void initWindow();
+	void initEnemies();
 public:
 	//Constructors/Destructors
 	Game();
@@ -31,3 +36,4 @@ public:
 	void render();
 };
 
+  
