@@ -1,3 +1,5 @@
 ﻿  Game.cpp
 E:\CODE\C++\SFML\Box Popper\Box Popper\Game.cpp(90,27): warning C4018: '<': signed/unsigned mismatch
+E:\CODE\C++\SFML\Box Popper\Box Popper\Game.cpp(103,20): warning C4018: '<': signed/unsigned mismatch
+E:\CODE\C++\SFML\Box Popper\Box Popper\Game.cpp(112,21): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
   Box Popper.vcxproj -> E:\CODE\C++\SFML\Box Popper\Debug\Box Popper.exe
