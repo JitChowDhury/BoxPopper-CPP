@@ -6,11 +6,13 @@ void Game::initVariables()
 	this->window = nullptr;
 
 	//gamelogic
-
+	this->endGame = false;
 	this->points = 0;
+	this->health = 10;
 	this->enemySpawnTimerMax = 10.f;
 	this->enemySpawnTimer = this->enemySpawnTimerMax;
 	this->maxEnemies = 10;
+	this->mouseHeld = false;
 }
 void Game::initWindow()
 {
@@ -50,6 +52,11 @@ Game::~Game()
 const bool Game::running() const
 {
 	return this->window->isOpen();
+}
+
+const bool Game::getEndGame() const
+{
+	return this->endGame;
 }
 
 
@@ -98,30 +105,53 @@ void Game::updateEnemy()
 		else
 			this->enemySpawnTimer += 1.f;
 	}
-	//move the enemies
-	bool deleted = false;
+	//move and update the enemies
 	for (int i = 0; i < enemies.size(); i++)
 	{
+		bool deleted = false;
 		this->enemies[i].move(0.f, 3.f);
-		//check if clicked upon
-		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-		{
-			if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
-			{
-				deleted = true;
-				this->points += 10.f;
-			}
-		}
+
 		//if enemy is past teh bottom of the screen
 		if (this->enemies[i].getPosition().y > this->window->getSize().y)
 		{
-			deleted = true;
-		}
-		//Final delete
-		if (deleted)
 			this->enemies.erase(this->enemies.begin() + i);
+			this->health -= 1;
+			std::cout << "Points: " << this->health << std::endl;
+		}
 
 	}
+
+
+	//check if clicked upon
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		if (this->mouseHeld == false)
+		{
+			this->mouseHeld = true;
+
+			bool deleted = false;
+			for (size_t i = 0; i < this->enemies.size() && deleted == false; i++)
+			{
+				if (this->enemies[i].getGlobalBounds().contains(this->mousePosView))
+				{
+					//Delete the enemy
+					deleted = true;
+					this->enemies.erase(this->enemies.begin() + i);
+					//gain points
+					this->points += 10.f;
+					std::cout << "Points: " << this->points << std::endl;
+				}
+			}
+		}
+
+	}
+	else
+	{
+		this->mouseHeld = false;
+	}
+
+
+
 }
 
 void Game::renderEnemy()
@@ -164,8 +194,15 @@ void Game::pollEvents()
 void Game::update()
 {
 	this->pollEvents();
-	this->updateMousePositions();
-	this->updateEnemy();
+	if (!this->endGame)
+	{
+		this->updateMousePositions();
+		this->updateEnemy();
+	}
+	if (this->health <= 0)
+	{
+		this->endGame = true;
+	}
 	//update mouse pos
 	//Relative to screen
 	//std::cout << "Mouse pos: " << sf::Mouse::getPosition().x << "," << sf::Mouse::getPosition().y << std::endl;

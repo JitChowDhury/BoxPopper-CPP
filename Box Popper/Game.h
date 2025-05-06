@@ -22,10 +22,13 @@ private:
 	sf::Vector2f mousePosView;
 
 	//Gamelogic
-	int points;
+	bool endGame;
+	int health;
+	unsigned points;//changing coz positive int only
 	float enemySpawnTimer;
 	float enemySpawnTimerMax;
 	int maxEnemies;
+	bool mouseHeld;
 
 
 	//Game objects
@@ -43,6 +46,7 @@ public:
 
 	//accessors
 	const bool running() const;
+	const bool getEndGame() const;
 
 	//Fucntions
 

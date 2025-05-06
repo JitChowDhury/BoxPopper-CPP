@@ -12,7 +12,7 @@ int main()
 
 	//Game Loop
 
-	while (game.running())//check if open
+	while (game.running() && !game.getEndGame())//check if open
 	{
 		//update
 		game.update();
