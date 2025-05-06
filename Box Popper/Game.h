@@ -3,6 +3,7 @@
 #include<iostream>
 #include<vector>
 #include<ctime>
+#include<sstream>
 
 //class that acts as the game engine
 //wrapper class
@@ -21,6 +22,12 @@ private:
 	sf::Vector2i mousePosWindow;
 	sf::Vector2f mousePosView;
 
+	//Resources
+	sf::Font font;
+
+	//text
+	sf::Text uiText;
+
 	//Gamelogic
 	bool endGame;
 	int health;
@@ -38,6 +45,8 @@ private:
 	//private  functions
 	void initVariables();
 	void initWindow();
+	void initFonts();
+	void initText();
 	void initEnemies();
 public:
 	//Constructors/Destructors
@@ -51,11 +60,17 @@ public:
 	//Fucntions
 
 	void spawnEnemy();
-	void updateEnemy();
-	void renderEnemy();
-	void updateMousePositions();
 	void pollEvents();
+
 	void update();
+	void updateEnemy();
+	void updateMousePositions();
+	void updateText();
+
+
+	void renderEnemy(sf::RenderTarget& target);
 	void render();
+	void renderText(sf::RenderTarget& target);
+
 };
 

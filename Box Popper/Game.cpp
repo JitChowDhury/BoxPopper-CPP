@@ -23,6 +23,19 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 }
 
+void Game::initFonts()
+{
+	this->font.loadFromFile("Fonts/VarelaRound-Regular.ttf");
+}
+
+void Game::initText()
+{
+	this->uiText.setFont(this->font);
+	this->uiText.setCharacterSize(24);
+	this->uiText.setFillColor(sf::Color::White);
+	this->uiText.setString("None");
+}
+
 void Game::initEnemies()
 {
 	this->enemy.setPosition(10.f, 10.f);//pos of top corner ofc
@@ -39,6 +52,8 @@ Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
+	this->initFonts();
+	this->initText();
 	this->initEnemies();
 }
 
@@ -154,12 +169,12 @@ void Game::updateEnemy()
 
 }
 
-void Game::renderEnemy()
+void Game::renderEnemy(sf::RenderTarget& target)
 {
 	//rendering all the enemies
 	for (auto& e : this->enemies)
 	{
-		this->window->draw(e);
+		target.draw(e);
 	}
 }
 
@@ -174,6 +189,21 @@ void Game::updateMousePositions()
 
 	this->mousePosWindow = sf::Mouse::getPosition(*this->window);
 	this->mousePosView = this->window->mapPixelToCoords(this->mousePosWindow);
+}
+
+void Game::updateText()
+{
+	std::stringstream ss;
+	ss << "Points: " << this->points<<"\n"
+		<<"Health: "<<this->health<<"\n";
+	this->uiText.setString(ss.str());
+}
+
+
+void Game::renderText(sf::RenderTarget& target)
+{
+	target.draw(this->uiText);
+
 }
 
 void Game::pollEvents()
@@ -197,6 +227,7 @@ void Game::update()
 	if (!this->endGame)
 	{
 		this->updateMousePositions();
+		this->updateText();
 		this->updateEnemy();
 	}
 	if (this->health <= 0)
@@ -225,8 +256,10 @@ void Game::render()
 
 	this->window->clear();//clear
 	//Draw game objects
-	this->renderEnemy();
+	this->renderEnemy(*this->window);
+	this->renderText(*this->window);
 
 	this->window->display();
 }
+
 
